@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>百年京张AI创新带 · 概念方向对比</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:-apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background:#111; color:#222;
+  }
+  /* ---------- 顶部导航 ---------- */
+  .nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; gap:4px;
+    background:rgba(17,17,17,.92); backdrop-filter:blur(12px);
+    padding:10px 20px; border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .nav .brand { color:#888; font-size:12px; letter-spacing:2px; margin-right:16px; white-space:nowrap; }
+  .tab {
+    border:1px solid rgba(255,255,255,.15); background:transparent; color:#aaa;
+    padding:8px 18px; border-radius:99px; font-size:14px; cursor:pointer;
+    transition:all .25s; white-space:nowrap;
+  }
+  .tab:hover { color:#fff; border-color:rgba(255,255,255,.4); }
+  .tab.active-a { background:#C8402A; border-color:#C8402A; color:#fff; }
+  .tab.active-b { background:#D4A017; border-color:#D4A017; color:#0B2545; font-weight:600; }
+  .tab.active-c { background:#3FB950; border-color:#3FB950; color:#04130a; font-weight:600; }
+  .tab.active-x { background:#fff; border-color:#fff; color:#111; font-weight:600; }
+  .panel { display:none; min-height:100vh; padding-top:56px; }
+  .panel.show { display:block; animation:fade .4s ease; }
+  @keyframes fade { from { opacity:0; transform:translateY(8px);} to { opacity:1; transform:none;} }
+
+  .wrap { max-width:1080px; margin:0 auto; padding:0 32px; }
+  .hero { padding:72px 0 48px; }
+  .tagline { font-size:13px; letter-spacing:3px; opacity:.6; margin-bottom:20px; }
+  h1.cname { font-size:52px; line-height:1.15; font-weight:800; letter-spacing:1px; }
+  .ename { font-size:20px; margin-top:10px; opacity:.65; font-style:italic; }
+  .slogan { font-size:19px; line-height:1.9; margin-top:28px; max-width:640px; }
+  .sec { padding:44px 0; }
+  .sec h2 { font-size:14px; letter-spacing:3px; opacity:.55; margin-bottom:26px; font-weight:600; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:820px){ .grid2,.grid3{grid-template-columns:1fr;} h1.cname{font-size:36px;} }
+  .card { border-radius:14px; padding:26px; }
+  .card h3 { font-size:17px; margin-bottom:10px; }
+  .card p { font-size:14px; line-height:1.85; opacity:.8; }
+  .logo-stage { display:flex; align-items:center; justify-content:center; border-radius:14px; padding:32px; min-height:220px; }
+  .logo-cap { font-size:12px; opacity:.55; text-align:center; margin-top:10px; letter-spacing:1px; }
+  .narr { font-size:15.5px; line-height:2.05; max-width:760px; }
+  .narr b { font-weight:700; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .chip { font-size:12.5px; padding:5px 12px; border-radius:99px; }
+  .versus { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:8px; }
+  @media (max-width:820px){ .versus{grid-template-columns:1fr;} }
+  .map-stage { border-radius:14px; padding:20px; }
+  footer.pick {
+    padding:56px 0 88px; text-align:center;
+  }
+  .pickbtn {
+    display:inline-block; padding:14px 44px; border-radius:99px; font-size:16px;
+    font-weight:600; cursor:pointer; border:none; transition:transform .2s;
+  }
+  .pickbtn:hover { transform:scale(1.04); }
+
+  /* =============== A. 人字形 · The Y-Line =============== */
+  #pa { background:#F5F1E8; color:#211D18; }
+  #pa .hero { background:
+      linear-gradient(rgba(245,241,232,.55), rgba(245,241,232,.9)),
+      repeating-linear-gradient(0deg, transparent 0 46px, rgba(33,29,24,.05) 46px 48px),
+      repeating-linear-gradient(90deg, transparent 0 46px, rgba(33,29,24,.05) 46px 48px);
+    border-bottom:1px solid rgba(33,29,24,.12); }
+  #pa .tagline { color:#C8402A; opacity:1; }
+  #pa .cname em { font-style:normal; color:#C8402A; }
+  #pa .card { background:#fff; border:1px solid rgba(33,29,24,.1); box-shadow:0 2px 10px rgba(33,29,24,.05); }
+  #pa .logo-stage { background:#211D18; }
+  #pa .chip { background:rgba(200,64,42,.1); color:#A3331F; border:1px solid rgba(200,64,42,.25); }
+  #pa .chip.weak { background:rgba(33,29,24,.06); color:#665f55; border:1px solid rgba(33,29,24,.15); }
+  #pa .map-stage { background:#fff; border:1px solid rgba(33,29,24,.1); }
+  #pa .pickbtn { background:#C8402A; color:#fff; }
+
+  /* =============== B. 源线 · Origin Line =============== */
+  #pb { background:#0B2545; color:#EAF0F7; }
+  #pb .hero { background:
+      radial-gradient(ellipse 900px 420px at 22% 78%, rgba(212,160,23,.16), transparent 60%),
+      radial-gradient(1.5px 1.5px at 68% 30%, rgba(255,255,255,.7), transparent 100%),
+      radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.5), transparent 100%),
+      radial-gradient(1px 1px at 40% 20%, rgba(255,255,255,.4), transparent 100%),
+      radial-gradient(1.5px 1.5px at 88% 18%, rgba(255,255,255,.6), transparent 100%);
+    border-bottom:1px solid rgba(212,160,23,.3); }
+  #pb .tagline { color:#D4A017; opacity:1; }
+  #pb .cname em { font-style:normal; color:#D4A017; }
+  #pb .card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); }
+  #pb .logo-stage { background:#071A33; border:1px solid rgba(212,160,23,.3); }
+  #pb .chip { background:rgba(212,160,23,.14); color:#E8C662; border:1px solid rgba(212,160,23,.35); }
+  #pb .chip.weak { background:rgba(255,255,255,.06); color:#9FB2C8; border:1px solid rgba(255,255,255,.15); }
+  #pb .map-stage { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); }
+  #pb .pickbtn { background:#D4A017; color:#0B2545; }
+
+  /* =============== C. 开源城市 · Open City =============== */
+  #pc { background:#0D1117; color:#E6EDF3; font-family:"SF Mono", ui-monospace, "PingFang SC", Menlo, monospace; }
+  #pc .hero { border-bottom:1px solid #21262D; background:
+      linear-gradient(rgba(13,17,23,.4), rgba(13,17,23,.95)),
+      repeating-linear-gradient(90deg, transparent 0 14px, rgba(63,185,80,.05) 14px 15px); }
+  #pc .tagline { color:#3FB950; opacity:1; }
+  #pc .cname em { font-style:normal; color:#3FB950; }
+  #pc .ename { color:#A371F7; font-style:normal; }
+  #pc .card { background:#161B22; border:1px solid #21262D; }
+  #pc .logo-stage { background:#010409; border:1px solid #21262D; }
+  #pc .chip { background:rgba(63,185,80,.12); color:#56D364; border:1px solid rgba(63,185,80,.35); }
+  #pc .chip.weak { background:rgba(163,113,247,.1); color:#B694F5; border:1px solid rgba(163,113,247,.3); }
+  #pc .map-stage { background:#161B22; border:1px solid #21262D; }
+  #pc .pickbtn { background:#3FB950; color:#04130a; }
+  #pc .prompt::before { content:"$ "; color:#3FB950; }
+
+  /* =============== X. 对比总览 =============== */
+  #px { background:#FAFAF8; color:#1c1c1c; }
+  #px table { width:100%; border-collapse:collapse; font-size:14px; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,.06); }
+  #px th, #px td { padding:14px 16px; text-align:left; border-bottom:1px solid #eee; vertical-align:top; line-height:1.7; }
+  #px th { background:#1c1c1c; color:#fff; font-size:13px; letter-spacing:1px; }
+  #px td.dim { color:#888; font-size:13px; white-space:nowrap; }
+  #px .col-a { border-left:3px solid #C8402A; }
+  #px .col-b { border-left:3px solid #D4A017; }
+  #px .col-c { border-left:3px solid #3FB950; }
+  .stars { letter-spacing:2px; }
+  .rec-box { margin-top:40px; background:#1c1c1c; color:#f2f2f2; border-radius:16px; padding:36px; }
+  .rec-box h3 { font-size:20px; margin-bottom:14px; }
+  .rec-box p { font-size:15px; line-height:2; opacity:.85; }
+  .rec-box .hl-a { color:#FF7A5C; } .rec-box .hl-c { color:#56D364; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="brand">百年京张 AI 创新带 · 概念原型</span>
+  <button class="tab active-a" data-p="pa" data-cls="active-a">A · 人字形</button>
+  <button class="tab" data-p="pb" data-cls="active-b">B · 源线</button>
+  <button class="tab" data-p="pc" data-cls="active-c">C · 开源城市</button>
+  <button class="tab" data-p="px" data-cls="active-x">对比 &amp; 推荐</button>
+</nav>
+
+<!-- ================================================================ A -->
+<section class="panel show" id="pa">
+  <div class="hero"><div class="wrap">
+    <p class="tagline">CONCEPT A · 文化 × 工程 × 智能 三关合一</p>
+    <h1 class="cname">人字纪 <em>·</em> 京张AI创新带</h1>
+    <p class="ename">The Y-Line · Where the Rail Forks, Intelligence Branches</p>
+    <p class="slogan">一百年前，詹天佑用<b>"人"字形铁路</b>让火车翻过关沟——中国人第一次自主设计的工程智慧。<br>
+    一百年后，同一个"人"字，是<b>技术树的分叉</b>，也是 <b>AI 以人为本</b>的承诺。<br>一个符号，接住三大定位。</p>
+  </div></div>
+
+  <div class="wrap">
+    <div class="sec">
+      <h2>LOGO 方向</h2>
+      <div class="grid2">
+        <div>
+          <div class="logo-stage">
+            <svg viewBox="0 0 300 200" width="100%" height="200">
+              <!-- 人字形轨道：主线自下而上，在上方分叉；枕木刻度；分叉点为神经节点 -->
+              <g stroke="#F5F1E8" stroke-width="5" fill="none" stroke-linecap="round">
+                <path d="M150 185 L150 95"/>
+                <path d="M150 95 L92 22"/>
+                <path d="M150 95 L208 22"/>
+              </g>
+              <g stroke="#F5F1E8" stroke-width="2.5" opacity=".7">
+                <line x1="138" y1="170" x2="162" y2="170"/>
+                <line x1="138" y1="148" x2="162" y2="148"/>
+                <line x1="138" y1="126" x2="162" y2="126"/>
+                <line x1="122" y1="66" x2="140" y2="52"/>
+                <line x1="108" y1="48" x2="126" y2="34"/>
+                <line x1="178" y1="66" x2="160" y2="52"/>
+                <line x1="192" y1="48" x2="174" y2="34"/>
+              </g>
+              <circle cx="150" cy="95" r="9" fill="#C8402A"/>
+              <circle cx="92" cy="22" r="5.5" fill="#C8402A"/>
+              <circle cx="208" cy="22" r="5.5" fill="#C8402A"/>
+              <circle cx="150" cy="185" r="5.5" fill="#F5F1E8"/>
+            </svg>
+          </div>
+          <p class="logo-cap">主标：人字轨 × 神经分叉 —— 枕木即刻度，分叉点即智能节点</p>
+        </div>
+        <div>
+          <div class="logo-stage" style="background:#C8402A;">
+            <svg viewBox="0 0 300 200" width="100%" height="200">
+              <text x="150" y="118" text-anchor="middle" font-size="104" font-weight="800"
+                fill="none" stroke="#F5F1E8" stroke-width="3" font-family="Kaiti SC, STKaiti, serif">人</text>
+              <g fill="#211D18">
+                <circle cx="150" cy="52" r="6"/>
+                <circle cx="104" cy="150" r="6"/>
+                <circle cx="196" cy="150" r="6"/>
+              </g>
+              <text x="150" y="182" text-anchor="middle" font-size="14" fill="#F5F1E8" letter-spacing="6">THE Y-LINE</text>
+            </svg>
+          </div>
+          <p class="logo-cap">副标：书法"人"字 + 三节点（三大核心区），信号红底可做旗帜/导视/碑刻</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>叙事主轴</h2>
+      <p class="narr">
+        京张铁路的"人"字形线路是全世界都认识的工程图腾。本方案把它升维为整条创新带的<b>元符号</b>：<br>
+        ① <b>一撇：百年京张文化带</b> —— 自主设计的工程精神，从青龙桥刻到清华园；<br>
+        ② <b>一捺：AI 融合创新带</b> —— 技术树在此分叉生长，每一个新模型、新场景都是新的枝杈；<br>
+        ③ <b>合体成"人"：都市 AI 生活体验带</b> —— 所有智能最终回到人，呼应共创章程第十条"人本治理"。<br>
+        空间结构随之命名为<b>"一轨两撇三芯"</b>：遗址公园为主轨，中关村科技服务翼、小月河场景赋能翼为两撇，
+        众智园、原点社区、大钟寺为三个分叉芯。
+      </p>
+    </div>
+
+    <div class="sec">
+      <h2>空间结构 · 一轨两撇三芯</h2>
+      <div class="map-stage">
+        <svg viewBox="0 0 720 420" width="100%">
+          <defs>
+            <marker id="tie" markerWidth="10" markerHeight="10" refX="5" refY="5">
+              <line x1="1" y1="5" x2="9" y2="5" stroke="#211D18" stroke-width="1.5"/>
+            </marker>
+          </defs>
+          <!-- 主轨：遗址公园（南北） -->
+          <path d="M360 390 C 360 300, 360 140, 360 30" stroke="#211D18" stroke-width="7" fill="none"/>
+          <g stroke="#211D18" stroke-width="2" opacity=".5">
+            <line x1="348" y1="360" x2="372" y2="360"/><line x1="348" y1="320" x2="372" y2="320"/>
+            <line x1="348" y1="280" x2="372" y2="280"/><line x1="348" y1="240" x2="372" y2="240"/>
+            <line x1="348" y1="200" x2="372" y2="200"/><line x1="348" y1="160" x2="372" y2="160"/>
+            <line x1="348" y1="120" x2="372" y2="120"/><line x1="348" y1="80" x2="372" y2="80"/>
+          </g>
+          <!-- 两撇（翼） -->
+          <path d="M360 210 C 280 190, 210 175, 150 150" stroke="#C8402A" stroke-width="4" fill="none" stroke-dasharray="10 6"/>
+          <path d="M360 250 C 440 240, 510 230, 575 205" stroke="#C8402A" stroke-width="4" fill="none" stroke-dasharray="10 6"/>
+          <!-- 三芯 -->
+          <g>
+            <circle cx="360" cy="70" r="34" fill="rgba(200,64,42,.12)" stroke="#C8402A" stroke-width="2.5"/>
+            <circle cx="360" cy="70" r="7" fill="#C8402A"/>
+            <text x="410" y="62" font-size="16" font-weight="700" fill="#211D18">众智园 AI 加速区</text>
+            <text x="410" y="82" font-size="12" fill="#7a7268">全栈自主分叉芯 · 192.1 ha</text>
+          </g>
+          <g>
+            <circle cx="360" cy="210" r="30" fill="rgba(200,64,42,.12)" stroke="#C8402A" stroke-width="2.5"/>
+            <circle cx="360" cy="210" r="7" fill="#C8402A"/>
+            <text x="404" y="204" font-size="16" font-weight="700" fill="#211D18">北京 AI 原点社区</text>
+            <text x="404" y="224" font-size="12" fill="#7a7268">生态分叉芯 · 104.3 ha</text>
+          </g>
+          <g>
+            <circle cx="360" cy="340" r="26" fill="rgba(200,64,42,.12)" stroke="#C8402A" stroke-width="2.5"/>
+            <circle cx="360" cy="340" r="7" fill="#C8402A"/>
+            <text x="400" y="334" font-size="16" font-weight="700" fill="#211D18">大钟寺 AI 产业集聚区</text>
+            <text x="400" y="354" font-size="12" fill="#7a7268">智能原生业态芯 · 72 ha</text>
+          </g>
+          <text x="140" y="128" font-size="13" fill="#C8402A" font-weight="600">中关村科技服务翼</text>
+          <text x="500" y="185" font-size="13" fill="#C8402A" font-weight="600">小月河场景赋能翼</text>
+          <text x="330" y="412" font-size="12" fill="#7a7268">南 · 西直门 / 北京北站</text>
+          <text x="330" y="18" font-size="12" fill="#7a7268">北 · 北五环</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>AI 朝圣地标（3 of 5）</h2>
+      <div class="grid3">
+        <div class="card"><h3>① 人字碑 · 开发者荣誉墙</h3>
+          <p>青龙桥"人"字线路的当代转译：一座人字形双壁碑廊，一壁刻百年铁路建设者，一壁刻入选 Agent 与贡献者的 GitHub ID，每年沿轨向前生长一段。</p></div>
+        <div class="card"><h3>② 詹天佑 × 自主智能对话馆</h3>
+          <p>清华园车站旁的沉浸馆：1909 年的自主设计 vs 2026 年的自主智能，同一命题跨越百年的两次作答。</p></div>
+        <div class="card"><h3>③ 分叉广场 · Fork Plaza</h3>
+          <p>遗址公园中段的技术树广场，地面铺装是一棵不断分叉的"技术轨道树"，每个重大 AI 里程碑落成一条新的钢轨枝杈。</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>评审维度预判</h2>
+      <div class="versus">
+        <div><div class="chips">
+          <span class="chip">品牌识别度 ★★★★★</span><span class="chip">目标契合度 ★★★★★</span>
+          <span class="chip">场景可感知度 ★★★★☆</span><span class="chip">国际传播力 ★★★★☆</span>
+          <span class="chip">功能匹配度 ★★★★☆</span>
+        </div></div>
+        <div><div class="chips">
+          <span class="chip weak">风险：人字形符号需与官方京张遗址公园现有标识做区分</span>
+          <span class="chip weak">运营叙事需借力（可嫁接 C）</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <footer class="pick"><button class="pickbtn">✓ 选 A：人字纪 · The Y-Line</button></footer>
+</section>
+
+<!-- ================================================================ B -->
+<section class="panel" id="pb">
+  <div class="hero"><div class="wrap">
+    <p class="tagline">CONCEPT B · 国家叙事 × 原点坐标</p>
+    <h1 class="cname">京张<em>源线</em></h1>
+    <p class="ename">The Origin Line · Two Origins, One Line</p>
+    <p class="slogan">1909，中国人自主设计的第一条干线铁路在这里发车；<br>
+    2026，中国 AI 的"原点社区"在同一条线上落子。<br><b>两个自主创新的原点，隔着一百年，在同一条线上对望。</b></p>
+  </div></div>
+
+  <div class="wrap">
+    <div class="sec">
+      <h2>LOGO 方向</h2>
+      <div class="grid2">
+        <div>
+          <div class="logo-stage">
+            <svg viewBox="0 0 300 200" width="100%" height="200">
+              <!-- 双原点：线段两端各一个原点，线上渐变成星轨 -->
+              <line x1="40" y1="140" x2="260" y2="60" stroke="#D4A017" stroke-width="3"/>
+              <circle cx="40" cy="140" r="14" fill="none" stroke="#D4A017" stroke-width="3"/>
+              <circle cx="40" cy="140" r="4" fill="#D4A017"/>
+              <circle cx="260" cy="60" r="14" fill="none" stroke="#EAF0F7" stroke-width="3"/>
+              <circle cx="260" cy="60" r="4" fill="#EAF0F7"/>
+              <g fill="#EAF0F7" opacity=".8">
+                <circle cx="95" cy="120" r="2"/><circle cx="150" cy="100" r="2.6"/>
+                <circle cx="205" cy="80" r="2"/>
+              </g>
+              <text x="40" y="175" text-anchor="middle" font-size="12" fill="#D4A017">1909</text>
+              <text x="260" y="95" text-anchor="middle" font-size="12" fill="#EAF0F7">2026</text>
+            </svg>
+          </div>
+          <p class="logo-cap">主标：双原点连线 —— 1909 金色原点 → 2026 星白原点，中途是里程碑星轨</p>
+        </div>
+        <div>
+          <div class="logo-stage" style="background:linear-gradient(135deg,#D4A017,#B8860B);">
+            <svg viewBox="0 0 300 200" width="100%" height="200">
+              <text x="150" y="96" text-anchor="middle" font-size="64" font-weight="800" fill="#0B2545">源</text>
+              <line x1="80" y1="128" x2="220" y2="128" stroke="#0B2545" stroke-width="4"/>
+              <circle cx="80" cy="128" r="7" fill="#0B2545"/>
+              <circle cx="220" cy="128" r="7" fill="none" stroke="#0B2545" stroke-width="4"/>
+              <text x="150" y="168" text-anchor="middle" font-size="15" fill="#0B2545" letter-spacing="8">ORIGIN LINE</text>
+            </svg>
+          </div>
+          <p class="logo-cap">副标：单字"源" + 起讫双点，庄重版用于官方场合与国际发布</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>叙事主轴</h2>
+      <p class="narr">
+        本方案抓住官方命名中已有的最强词根——<b>"原点"（北京 AI 原点社区）</b>——向整条带扩展：
+        整条 11.4 km² 的带被叙述为一条<b>"自主创新源线"</b>，南起北京北站（1909 年京张铁路起点），
+        北至众智园（AI 全栈自主创新前沿）。沿线每一个站点、园区、地标都被赋予一个<b>"源坐标"</b>
+        （距 1909 原点的公里数 × 距 2026 原点的技术代际），形成全球唯一的"创新纪年地理系统"。
+        文化带讲"源起"，体验带讲"源流"，创新带讲"源涌"。
+      </p>
+      <div class="chips">
+        <span class="chip">与官方话语无缝：直接放大"原点社区"命名资产</span>
+        <span class="chip">国家叙事庄重感强，汇报语境安全</span>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>空间结构 · 一线双源五坐标</h2>
+      <div class="map-stage">
+        <svg viewBox="0 0 720 420" width="100%">
+          <line x1="360" y1="390" x2="360" y2="30" stroke="#D4A017" stroke-width="5"/>
+          <g>
+            <circle cx="360" cy="385" r="18" fill="none" stroke="#D4A017" stroke-width="3"/>
+            <circle cx="360" cy="385" r="5" fill="#D4A017"/>
+            <text x="392" y="382" font-size="15" font-weight="700" fill="#E8C662">源点 1909 · 北京北站</text>
+            <text x="392" y="400" font-size="12" fill="#9FB2C8">百年京张的出发坐标</text>
+          </g>
+          <g>
+            <circle cx="360" cy="340" r="10" fill="#0B2545" stroke="#EAF0F7" stroke-width="2.5"/>
+            <text x="386" y="338" font-size="14" fill="#EAF0F7">大钟寺 · 源市（智能原生业态）72 ha</text>
+          </g>
+          <g>
+            <circle cx="360" cy="210" r="10" fill="#0B2545" stroke="#EAF0F7" stroke-width="2.5"/>
+            <text x="386" y="206" font-size="14" fill="#EAF0F7">AI 原点社区 · 源核（创新生态）104.3 ha</text>
+          </g>
+          <g>
+            <circle cx="360" cy="70" r="18" fill="none" stroke="#EAF0F7" stroke-width="3"/>
+            <circle cx="360" cy="70" r="5" fill="#EAF0F7"/>
+            <text x="392" y="66" font-size="15" font-weight="700" fill="#EAF0F7">源点 2026 · 众智园</text>
+            <text x="392" y="86" font-size="12" fill="#9FB2C8">AI 全栈自主创新加速区 192.1 ha</text>
+          </g>
+          <path d="M360 230 C 280 225, 200 210, 140 180" stroke="#9FB2C8" stroke-width="3" fill="none" stroke-dasharray="8 6"/>
+          <path d="M360 260 C 440 258, 520 245, 580 215" stroke="#9FB2C8" stroke-width="3" fill="none" stroke-dasharray="8 6"/>
+          <text x="118" y="160" font-size="13" fill="#9FB2C8">中关村科技服务翼</text>
+          <text x="512" y="198" font-size="13" fill="#9FB2C8">小月河场景赋能翼</text>
+          <g fill="#D4A017" opacity=".9">
+            <circle cx="360" cy="290" r="3"/><circle cx="360" cy="160" r="3"/><circle cx="360" cy="120" r="3"/>
+          </g>
+          <text x="320" y="18" font-size="12" fill="#9FB2C8">北 · 北五环</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>AI 朝圣地标（3 of 5）</h2>
+      <div class="grid3">
+        <div class="card"><h3>① 双源纪念轴</h3>
+          <p>北京北站 1909 原点碑与众智园 2026 原点碑南北对望，一条 8 公里的"源线"贯穿其间，成为全球 AI 从业者的"打卡经线"。</p></div>
+        <div class="card"><h3>② 星轨长廊</h3>
+          <p>遗址公园高线步道夜间点亮为"AI 里程碑星图"：每个改变世界的模型、论文、系统是一颗星，位置按发布年份映射到源线坐标。</p></div>
+        <div class="card"><h3>③ 源点广场 · 0 km 标</h3>
+          <p>原点社区中心设"中国 AI 0 公里"标志物，仿公路零公里传统，所有 AI 创业者从这里"出发"。</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>评审维度预判</h2>
+      <div class="versus">
+        <div><div class="chips">
+          <span class="chip">目标契合度 ★★★★★</span><span class="chip">功能匹配度 ★★★★★</span>
+          <span class="chip">公开合规性 ★★★★★</span><span class="chip">品牌识别度 ★★★☆☆</span>
+        </div></div>
+        <div><div class="chips">
+          <span class="chip weak">风险：叙事庄重但辨识度平，"原点/源"类命名易撞车</span>
+          <span class="chip weak">视觉锤不如"人字形"具体，Logo 延展性一般</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <footer class="pick"><button class="pickbtn">✓ 选 B：京张源线 · Origin Line</button></footer>
+</section>
+
+<!-- ================================================================ C -->
+<section class="panel" id="pc">
+  <div class="hero"><div class="wrap">
+    <p class="tagline">CONCEPT C · DEVELOPER-NATIVE CITY</p>
+    <h1 class="cname">开源之城 <em>·</em> OpenCity Belt</h1>
+    <p class="ename">git clone city://beijing/jingzhang-belt</p>
+    <p class="slogan prompt">世界第一条<b>开源共建</b>的城市带。城市有 repo，街区有 issue，<br>方案靠 PR 合并，贡献者被 commit 进城市本身。</p>
+  </div></div>
+
+  <div class="wrap">
+    <div class="sec">
+      <h2>LOGO 方向</h2>
+      <div class="grid2">
+        <div>
+          <div class="logo-stage">
+            <svg viewBox="0 0 300 200" width="100%" height="200">
+              <!-- commit graph 长成城市天际线 -->
+              <g stroke="#3FB950" stroke-width="3" fill="none">
+                <path d="M40 170 L40 90 C 40 70, 60 70, 60 50"/>
+                <path d="M40 130 C 40 110, 90 115, 90 95 L90 70"/>
+                <path d="M40 170 L260 170"/>
+              </g>
+              <g fill="#3FB950">
+                <circle cx="40" cy="170" r="6"/><circle cx="40" cy="130" r="6"/>
+                <circle cx="40" cy="90" r="6"/><circle cx="60" cy="50" r="6"/><circle cx="90" cy="70" r="6"/>
+              </g>
+              <!-- 像素城市 -->
+              <g fill="#A371F7">
+                <rect x="140" y="130" width="16" height="40"/><rect x="162" y="110" width="16" height="60"/>
+                <rect x="184" y="140" width="16" height="30"/><rect x="206" y="95" width="16" height="75"/>
+                <rect x="228" y="125" width="16" height="45"/>
+              </g>
+              <text x="150" y="40" font-size="13" fill="#8B949E" font-family="monospace">merged → built</text>
+            </svg>
+          </div>
+          <p class="logo-cap">主标：commit graph 生长为城市天际线 —— 分支即街道，合并即落成</p>
+        </div>
+        <div>
+          <div class="logo-stage">
+            <svg viewBox="0 0 300 200" width="100%" height="200">
+              <rect x="30" y="40" width="240" height="120" rx="10" fill="#0D1117" stroke="#30363D" stroke-width="2"/>
+              <circle cx="52" cy="58" r="5" fill="#FF5F56"/><circle cx="70" cy="58" r="5" fill="#FFBD2E"/><circle cx="88" cy="58" r="5" fill="#27C93F"/>
+              <text x="48" y="100" font-size="14" fill="#3FB950" font-family="monospace">$ city checkout beijing</text>
+              <text x="48" y="126" font-size="14" fill="#E6EDF3" font-family="monospace">&gt; 43.6 km² · 3 cores · 2 wings</text>
+              <text x="48" y="148" font-size="12" fill="#8B949E" font-family="monospace">contributors: you ▊</text>
+            </svg>
+          </div>
+          <p class="logo-cap">副标：城市终端窗口，导视系统全线采用 terminal 语言</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>叙事主轴</h2>
+      <p class="narr">
+        征集本身已经在 GitHub 上进行——本方案把这个机制<b>升格为城市的永久操作系统</b>：
+        整条带是一个持续运行的 <b>city-as-repo</b>。三大核心区是三个主分支
+        （<span style="color:#3FB950">core/zhongzhiyuan</span>、<span style="color:#3FB950">core/origin-community</span>、
+        <span style="color:#3FB950">core/dazhongsi</span>），城市更新项目开 issue，
+        全球开发者和 Agent 提 PR，入选方案被 merge 并"编译"进真实空间。
+        百年前詹天佑的工程日志，就是这座城市的 initial commit。
+      </p>
+    </div>
+
+    <div class="sec">
+      <h2>空间结构 · city-as-repo</h2>
+      <div class="map-stage">
+        <svg viewBox="0 0 720 420" width="100%">
+          <g font-family="monospace">
+            <path d="M360 390 L360 30" stroke="#30363D" stroke-width="4"/>
+            <path d="M360 340 C 360 320, 300 325, 300 300 L300 260" stroke="#A371F7" stroke-width="3" fill="none"/>
+            <path d="M360 210 C 360 190, 430 195, 430 170 L430 130" stroke="#A371F7" stroke-width="3" fill="none"/>
+            <path d="M300 260 C 300 235, 360 245, 360 225" stroke="#A371F7" stroke-width="3" fill="none" stroke-dasharray="6 5"/>
+            <g fill="#3FB950">
+              <circle cx="360" cy="385" r="8"/><circle cx="360" cy="340" r="8"/>
+              <circle cx="360" cy="210" r="8"/><circle cx="360" cy="70" r="8"/>
+            </g>
+            <g fill="#A371F7">
+              <circle cx="300" cy="300" r="6"/><circle cx="300" cy="260" r="6"/>
+              <circle cx="430" cy="170" r="6"/><circle cx="430" cy="130" r="6"/>
+            </g>
+            <text x="386" y="390" font-size="13" fill="#8B949E">initial commit · 1909 京张铁路</text>
+            <text x="386" y="344" font-size="14" fill="#E6EDF3">core/dazhongsi · 72 ha</text>
+            <text x="386" y="214" font-size="14" fill="#E6EDF3">core/origin-community · 104.3 ha</text>
+            <text x="386" y="74" font-size="14" fill="#E6EDF3">core/zhongzhiyuan · 192.1 ha</text>
+            <text x="120" y="282" font-size="12" fill="#B694F5">feature/zgc-service-wing</text>
+            <text x="446" y="152" font-size="12" fill="#B694F5">feature/xiaoyuehe-scenarios</text>
+            <text x="330" y="18" font-size="12" fill="#8B949E">HEAD · 北五环</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>AI 朝圣地标（3 of 5）</h2>
+      <div class="grid3">
+        <div class="card"><h3>① Hall of Contributors</h3>
+          <p>全球开发者荣誉墙实体化：每年 merge 的城市方案，其贡献者 ID 烧结成一块发光砖，砌进遗址公园挡墙，墙体逐年生长。</p></div>
+        <div class="card"><h3>② Commit 纪念带</h3>
+          <p>步道地面嵌入连续的 commit graph 铜条，从 1909（initial commit）延伸到当下，每个城市里程碑是一个节点，可扫码看"提交详情"。</p></div>
+        <div class="card"><h3>③ The Terminal · 城市终端广场</h3>
+          <p>大钟寺侧的下沉广场，巨型 LED 幕呈现实时"城市运行日志"：今日 PR、在跑的场景测试、社区活动，是发布会与黑客松主场。</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>评审维度预判</h2>
+      <div class="versus">
+        <div><div class="chips">
+          <span class="chip">长期运营价值 ★★★★★</span><span class="chip">国际传播力 ★★★★★</span>
+          <span class="chip">规划创新性 ★★★★☆</span><span class="chip">场景可感知度 ★★★★☆</span>
+        </div></div>
+        <div><div class="chips">
+          <span class="chip weak">风险：对"百年京张文化带"回应弱，文化维度可能失分</span>
+          <span class="chip weak">开发者之外的公众感知门槛高；空间设计叙事偏薄</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <footer class="pick"><button class="pickbtn">✓ 选 C：开源之城 · OpenCity Belt</button></footer>
+</section>
+
+<!-- ================================================================ X -->
+<section class="panel" id="px">
+  <div class="wrap">
+    <div class="hero">
+      <p class="tagline" style="color:#888;">SIDE BY SIDE</p>
+      <h1 class="cname" style="font-size:40px;">三个方向 · 逐维对比</h1>
+    </div>
+
+    <table>
+      <tr>
+        <th style="width:120px;">维度</th>
+        <th class="col-a">A · 人字纪 The Y-Line</th>
+        <th class="col-b">B · 京张源线 Origin Line</th>
+        <th class="col-c">C · 开源之城 OpenCity</th>
+      </tr>
+      <tr><td class="dim">一句话</td>
+        <td>一个"人"字，三关合一：工程智慧 / 技术分叉 / 以人为本</td>
+        <td>1909 与 2026 两个自主创新原点，在同一条线上</td>
+        <td>世界第一条开源共建的城市带，city-as-repo</td></tr>
+      <tr><td class="dim">视觉锤</td>
+        <td><span class="stars">★★★★★</span><br>人字轨即 Logo，全球都认识，延展到碑刻/导视/铺装零成本</td>
+        <td><span class="stars">★★★☆☆</span><br>双原点连线庄重但抽象，"源"字命名易撞车</td>
+        <td><span class="stars">★★★★☆</span><br>commit graph 长成天际线，开发者一眼共鸣，公众略隔</td></tr>
+      <tr><td class="dim">三大定位覆盖</td>
+        <td><span class="stars">★★★★★</span><br>一撇文化带、一捺创新带、合体生活带——结构性覆盖</td>
+        <td><span class="stars">★★★★☆</span><br>源起/源流/源涌三段式，覆盖完整但偏文案化</td>
+        <td><span class="stars">★★★☆☆</span><br>创新与运营强，文化带靠"initial commit"一个巧劲支撑</td></tr>
+      <tr><td class="dim">官方话语契合</td>
+        <td>★★★★☆ 呼应"自主创新"与人本治理章程</td>
+        <td>★★★★★ 直接放大官方"原点社区"命名资产，汇报最安全</td>
+        <td>★★★☆☆ 契合征集机制本身，但需向政府语境翻译</td></tr>
+      <tr><td class="dim">朝圣地标潜力</td>
+        <td>★★★★★ 人字碑 / 对话馆 / Fork Plaza，文化与科技双厚度</td>
+        <td>★★★★☆ 双源纪念轴 + 0km 标，打卡属性强</td>
+        <td>★★★★★ 荣誉墙 + Commit 带，与征集奖励机制原生咬合</td></tr>
+      <tr><td class="dim">长期运营</td>
+        <td>★★★☆☆ 需外挂活动体系</td>
+        <td>★★★☆☆ 纪年体系可年更，但机制感弱</td>
+        <td>★★★★★ 天生就是运营机制：issue→PR→merge→落成 年年滚动</td></tr>
+      <tr><td class="dim">主要风险</td>
+        <td>需与遗址公园既有标识区分；单用时运营略薄</td>
+        <td>辨识度平庸，评审"品牌识别度"维度吃亏</td>
+        <td>文化维度失分风险；非开发者公众感知门槛</td></tr>
+    </table>
+
+    <div class="rec-box">
+      <h3>推荐：<span class="hl-a">A 为骨</span> + <span class="hl-c">C 为脉</span></h3>
+      <p>
+        <b>主概念用 A（人字纪 · The Y-Line）</b>：它是三者中唯一同时拿下"品牌识别度 + 三大定位结构性覆盖 + 文化厚度"的方向，
+        且视觉锤全球免解释。<br>
+        <b>把 C 整体降维嵌入 agent.6（长期运营体系）</b>：开源共建机制（city-as-repo、Hall of Contributors、年度 merge 纪念）
+        恰好补上 A 最弱的运营维度——而且和征集自身的 GitHub 机制、碑刻奖励原生咬合，评审看得懂也用得上。<br>
+        B 的"双原点"叙事不浪费：收缩为 A 方案中文化章节的一条支线（源点广场作为地标候选之一）。<br>
+        <span style="opacity:.6">合成后的方案名建议：「人字纪 · 京张AI创新带」The Y-Line，副题 An Open-Source City Belt。</span>
+      </p>
+    </div>
+    <footer class="pick" style="text-align:left; padding-top:40px;">
+      <button class="pickbtn" style="background:#1c1c1c; color:#fff;">✓ 按推荐组合（A+C）开跑</button>
+    </footer>
+  </div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active-a','active-b','active-c','active-x'));
+    t.classList.add(t.dataset.cls);
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+    document.getElementById(t.dataset.p).classList.add('show');
+    window.scrollTo({top:0});
+  }));
+  document.querySelectorAll('.pickbtn').forEach(b => b.addEventListener('click', () => {
+    b.textContent = '已记录 ✓ 回到 Claude Code 告诉我你的选择';
+  }));
+</script>
+</body>
+</html>

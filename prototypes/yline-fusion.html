@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人字纪 · The Y-Line — A+C 融合版 Mock</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:-apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background:#F5F1E8; color:#211D18;
+  }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 32px; }
+  .sec { padding:56px 0; }
+  .sec h2 { font-size:14px; letter-spacing:3px; color:#C8402A; margin-bottom:8px; font-weight:700; }
+  .sec .sub { font-size:24px; font-weight:800; margin-bottom:28px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:860px){ .grid2,.grid3{grid-template-columns:1fr;} }
+
+  /* ---- 顶部固定条 ---- */
+  .topbar {
+    position:fixed; top:0; left:0; right:0; z-index:99;
+    background:rgba(33,29,24,.94); backdrop-filter:blur(10px);
+    display:flex; align-items:center; gap:18px; padding:10px 24px;
+    color:#F5F1E8; font-size:13px;
+  }
+  .topbar .dot { width:8px; height:8px; border-radius:50%; background:#C8402A; }
+  .topbar .mono { font-family:ui-monospace, "SF Mono", Menlo, monospace; color:#3FB950; margin-left:auto; }
+
+  /* ---- Hero：图纸底 ---- */
+  .hero {
+    padding:130px 0 80px;
+    background:
+      linear-gradient(rgba(245,241,232,.4), rgba(245,241,232,.94)),
+      repeating-linear-gradient(0deg, transparent 0 46px, rgba(33,29,24,.06) 46px 48px),
+      repeating-linear-gradient(90deg, transparent 0 46px, rgba(33,29,24,.06) 46px 48px);
+    border-bottom:2px solid #211D18;
+  }
+  .hero .kicker { font-size:13px; letter-spacing:4px; color:#C8402A; font-weight:700; margin-bottom:22px; }
+  .hero h1 { font-size:58px; font-weight:800; line-height:1.15; }
+  .hero h1 em { font-style:normal; color:#C8402A; }
+  .hero .en { font-size:21px; margin-top:12px; color:#665f55; font-style:italic; }
+  .hero .en code { font-style:normal; font-family:ui-monospace, Menlo, monospace; font-size:16px;
+    background:#211D18; color:#3FB950; padding:3px 10px; border-radius:6px; }
+  .hero .slogan { font-size:19px; line-height:2; margin-top:30px; max-width:700px; }
+  .hero .slogan b { color:#C8402A; }
+
+  /* ---- 融合公式 ---- */
+  .formula { display:flex; align-items:stretch; gap:0; margin-top:20px; flex-wrap:wrap; }
+  .fcell { flex:1; min-width:220px; padding:22px 24px; border:1.5px solid #211D18; margin:-0.75px; background:#fff; }
+  .fcell h4 { font-size:15px; margin-bottom:8px; }
+  .fcell p { font-size:13px; line-height:1.8; color:#665f55; }
+  .fcell.fa { border-top:5px solid #C8402A; }
+  .fcell.fc { border-top:5px solid #3FB950; }
+  .fcell.fb { border-top:5px solid #D4A017; }
+  .fcell .role { display:inline-block; font-size:11px; letter-spacing:2px; padding:2px 10px; border-radius:99px; margin-bottom:10px; font-weight:700; }
+  .fa .role { background:rgba(200,64,42,.12); color:#A3331F; }
+  .fc .role { background:rgba(63,185,80,.14); color:#1F7A38; }
+  .fb .role { background:rgba(212,160,23,.16); color:#8a6a0a; }
+
+  /* ---- 卡片 ---- */
+  .card { background:#fff; border:1px solid rgba(33,29,24,.12); border-radius:14px; padding:26px;
+    box-shadow:0 2px 10px rgba(33,29,24,.05); }
+  .card h3 { font-size:17px; margin-bottom:10px; }
+  .card p { font-size:14px; line-height:1.9; color:#4d463d; }
+  .card .tag { display:inline-block; font-size:11px; letter-spacing:1px; padding:2px 9px; border-radius:99px;
+    margin-bottom:10px; font-weight:700; }
+  .tag.ta { background:rgba(200,64,42,.12); color:#A3331F; }
+  .tag.tc { background:rgba(63,185,80,.14); color:#1F7A38; }
+  .tag.tb { background:rgba(212,160,23,.16); color:#8a6a0a; }
+  .tag.tac { background:linear-gradient(90deg, rgba(200,64,42,.12), rgba(63,185,80,.14)); color:#211D18; }
+
+  .logo-stage { display:flex; align-items:center; justify-content:center; border-radius:14px; padding:30px; min-height:230px; background:#211D18; }
+  .logo-cap { font-size:12px; color:#8a8175; text-align:center; margin-top:10px; letter-spacing:1px; }
+  .map-stage { background:#fff; border:1px solid rgba(33,29,24,.12); border-radius:14px; padding:22px; }
+
+  /* ---- 终端面板（C 的操作系统层）---- */
+  .terminal {
+    background:#0D1117; border-radius:14px; overflow:hidden;
+    border:1px solid #21262D; box-shadow:0 14px 40px rgba(33,29,24,.25);
+    font-family:ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .term-head { background:#161B22; padding:10px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #21262D; }
+  .term-head i { width:11px; height:11px; border-radius:50%; display:inline-block; }
+  .term-head .r{background:#FF5F56;} .term-head .y{background:#FFBD2E;} .term-head .g{background:#27C93F;}
+  .term-head span { color:#8B949E; font-size:12px; margin-left:8px; }
+  .term-body { padding:22px 24px; font-size:13.5px; line-height:2.1; color:#E6EDF3; }
+  .term-body .cm { color:#8B949E; } .term-body .gr { color:#3FB950; } .term-body .pu { color:#B694F5; }
+  .term-body .rd { color:#FF7A5C; } .term-body .yl { color:#E3B341; }
+
+  /* ---- 年度周期 ---- */
+  .cycle { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:24px; }
+  @media (max-width:860px){ .cycle{grid-template-columns:1fr 1fr;} }
+  .cyc { background:#fff; border:1px solid rgba(33,29,24,.12); border-radius:12px; padding:18px; position:relative; }
+  .cyc b { display:block; font-size:15px; margin-bottom:6px; }
+  .cyc small { font-size:12px; color:#8a8175; letter-spacing:1px; }
+  .cyc p { font-size:13px; line-height:1.75; color:#4d463d; margin-top:8px; }
+  .cyc::after { content:"→"; position:absolute; right:-14px; top:44%; color:#C8402A; font-weight:700; }
+  .cyc:last-child::after { content:""; }
+
+  /* ---- 底部 ---- */
+  .final {
+    background:#211D18; color:#F5F1E8; padding:64px 0 80px; margin-top:40px;
+  }
+  .final h3 { font-size:26px; margin-bottom:16px; }
+  .final h3 em { font-style:normal; color:#C8402A; }
+  .final p { font-size:15px; line-height:2; opacity:.85; max-width:760px; }
+  .pickbtn {
+    display:inline-block; margin-top:30px; padding:15px 48px; border-radius:99px; font-size:16px;
+    font-weight:700; cursor:pointer; border:none; background:#C8402A; color:#fff; transition:transform .2s;
+  }
+  .pickbtn:hover { transform:scale(1.04); }
+  .pickbtn.alt { background:transparent; color:#F5F1E8; border:1.5px solid rgba(245,241,232,.4); margin-left:14px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="dot"></span>
+  <span>人字纪 · THE Y-LINE — 融合版 MOCK（A 为骨 · C 为脉 · B 为线）</span>
+  <span class="mono">branch: fusion/a-plus-c</span>
+</div>
+
+<!-- ====================== HERO ====================== -->
+<div class="hero"><div class="wrap">
+  <p class="kicker">百年京张 AI 创新带 · 总体概念方案</p>
+  <h1>人字纪 <em>·</em> 京张AI创新带</h1>
+  <p class="en">The Y-Line — An Open-Source City Belt&nbsp;&nbsp;<code>git checkout y-line</code></p>
+  <p class="slogan">
+    1909 年，詹天佑在青龙桥画下"人"字——中国自主创新的第一笔，<b>这座城市的 initial commit</b>。<br>
+    一百年后，AI 时代的新纪元在同一条轨道上落笔，<b>仍以"人"为名</b>。<br>
+    寒武纪以生命爆发命名，侏罗纪以巨兽命名——<b>智能爆发的纪元，中国提议以"人"命名：人字纪</b>。
+  </p>
+</div></div>
+
+<div class="wrap">
+
+  <!-- ====================== 理念三层 ====================== -->
+  <div class="sec">
+    <h2>PHILOSOPHY</h2>
+    <div class="sub">理念：器 · 道 · 世 —— 一个"人"字的三重回答</div>
+    <div class="grid3">
+      <div class="card" style="border-top:4px solid #211D18;">
+        <span class="tag ta">器 · 中华文化 × 现代科技</span>
+        <h3>中国人始终用"造物"记录文明</h3>
+        <p>600 年前，永乐大钟铸下 23 万字铭文，声闻数十里；100 年前，詹天佑用人字轨让火车翻过关沟；今天，代码接续了这个传统。<b>人字轨与 git branch 是同一个图形</b>——自主创新的工程图腾，横跨百年而同构。</p>
+      </div>
+      <div class="card" style="border-top:4px solid #C8402A;">
+        <span class="tag ta">道 · 大国风范</span>
+        <h3>新纪元，以人为名</h3>
+        <p>世界正在争论 AI 会把人带向哪里。这条带用命名直接作答：<b>智能爆发的纪元，仍以"人"为名</b>。The Y stands for Human——这是"以人为本、智能向善"的空间宣言，直接承载「AI 治理全球话语权」功能。</p>
+      </div>
+      <div class="card" style="border-top:4px solid #3FB950;">
+        <span class="tag tc">世 · 世界融合</span>
+        <h3>一撇一捺，互相支撑</h3>
+        <p>"人"字的结构是两笔互相支撑——中国与世界、人类与 AI、政府与开发者，互为一撇一捺。<b>北京为全球开发者留出一面永久刻名的墙</b>：开放不是口号，是把你的名字铸进城市的诚意。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== 融合公式 ====================== -->
+  <div class="sec">
+    <h2>FUSION LOGIC</h2>
+    <div class="sub">融合公式：骨 × 脉 × 线</div>
+    <div class="formula">
+      <div class="fcell fa">
+        <span class="role">A · 骨 SKELETON</span>
+        <h4>人字形 — 城市的形</h4>
+        <p>主概念、命名、Logo、空间结构、文化叙事全部由"人字"生成：一撇文化带、一捺创新带、合体成人本生活带。</p>
+      </div>
+      <div class="fcell fc">
+        <span class="role">C · 脉 BLOODSTREAM</span>
+        <h4>开源机制 — 城市的血</h4>
+        <p>降维嵌入运营层（agent.6）：city-as-repo、年度 Merge Day、贡献者荣誉体系。"人"字分叉在 git 语言里本来就是 branch——两个概念共用同一个符号。</p>
+      </div>
+      <div class="fcell fb">
+        <span class="role">B · 历 CALENDAR</span>
+        <h4>人字纪元 — 城市的时间</h4>
+        <p>双原点升级为纪年系统：<b>Y-Era，以 1909 为人字纪元年（Y0），2026 年即 Y117</b>。全线里程碑、碑刻、活动一律双纪年（公元 × Y 历），北京北站与众智园成为纪元的南北端点。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== LOGO 系统 ====================== -->
+  <div class="sec">
+    <h2>IDENTITY SYSTEM</h2>
+    <div class="sub">Logo：一个符号，两种语言都读得懂</div>
+    <div class="grid2">
+      <div>
+        <div class="logo-stage">
+          <svg viewBox="0 0 300 210" width="100%" height="210">
+            <!-- 主标：人字轨 = git branch，枕木即刻度，节点即 commit -->
+            <g stroke="#F5F1E8" stroke-width="5" fill="none" stroke-linecap="round">
+              <path d="M150 192 L150 102"/>
+              <path d="M150 102 L94 30"/>
+              <path d="M150 102 L206 30"/>
+            </g>
+            <g stroke="#F5F1E8" stroke-width="2.5" opacity=".65">
+              <line x1="138" y1="176" x2="162" y2="176"/>
+              <line x1="138" y1="152" x2="162" y2="152"/>
+              <line x1="138" y1="128" x2="162" y2="128"/>
+              <line x1="121" y1="72" x2="139" y2="58"/>
+              <line x1="107" y1="54" x2="125" y2="40"/>
+              <line x1="179" y1="72" x2="161" y2="58"/>
+              <line x1="193" y1="54" x2="175" y2="40"/>
+            </g>
+            <circle cx="150" cy="192" r="6" fill="#F5F1E8"/>
+            <circle cx="150" cy="102" r="9" fill="#C8402A"/>
+            <circle cx="94" cy="30" r="6" fill="#3FB950"/>
+            <circle cx="206" cy="30" r="6" fill="#3FB950"/>
+          </svg>
+        </div>
+        <p class="logo-cap">主标 —— 铁路人看见：人字轨与枕木；开发者看见：一次 branch 与三个 commit</p>
+      </div>
+      <div>
+        <div class="logo-stage" style="background:#0D1117; border:1px solid #21262D;">
+          <svg viewBox="0 0 300 210" width="100%" height="210">
+            <rect x="26" y="30" width="248" height="150" rx="10" fill="#010409" stroke="#30363D" stroke-width="1.5"/>
+            <circle cx="48" cy="50" r="5" fill="#FF5F56"/><circle cx="66" cy="50" r="5" fill="#FFBD2E"/><circle cx="84" cy="50" r="5" fill="#27C93F"/>
+            <text x="44" y="88" font-size="13" fill="#3FB950" font-family="monospace">$ git log --graph 1909..2026</text>
+            <g transform="translate(60,100)" stroke-width="3" fill="none">
+              <path d="M20 62 L20 30 M20 30 L4 8 M20 30 L36 8" stroke="#C8402A"/>
+              <circle cx="20" cy="62" r="4" fill="#F5F1E8" stroke="none"/>
+              <circle cx="20" cy="30" r="5" fill="#C8402A" stroke="none"/>
+              <circle cx="4" cy="8" r="4" fill="#3FB950" stroke="none"/>
+              <circle cx="36" cy="8" r="4" fill="#3FB950" stroke="none"/>
+            </g>
+            <text x="120" y="126" font-size="12.5" fill="#E6EDF3" font-family="monospace">* 1909 initial commit 詹天佑</text>
+            <text x="120" y="148" font-size="12.5" fill="#B694F5" font-family="monospace">|\ 2026 branch: y-line/ai</text>
+            <text x="120" y="170" font-size="12.5" fill="#8B949E" font-family="monospace">contributors: 你的ID ▊</text>
+          </svg>
+        </div>
+        <p class="logo-cap">数字端应用 —— 官网 / 活动视觉 / 导视屏统一用 terminal 语言复述同一符号</p>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px;">
+      <div class="card"><span class="tag ta">碑刻应用</span><h3>石材阴刻 + 红铜嵌线</h3><p>人字轨 Logo 直接转为碑刻母版：花岗岩阴刻轨线，分叉节点嵌红铜圆钉，贡献者 ID 沿枕木刻度排布。</p></div>
+      <div class="card"><span class="tag ta">导视应用</span><h3>沿线导视 = 里程标语言</h3><p>复刻铁路里程标形制：白底黑字红顶，正面是到"分叉点"的距离，背面是该节点的 commit 编号。</p></div>
+      <div class="card"><span class="tag tc">动态应用</span><h3>生长中的 Logo</h3><p>数字端 Logo 每年长出一层新分叉——由当年 merge 的方案数决定，Logo 本身成为城市的年轮。</p></div>
+    </div>
+  </div>
+
+  <!-- ====================== 空间结构 ====================== -->
+  <div class="sec">
+    <h2>SPATIAL STRUCTURE</h2>
+    <div class="sub">一轨两撇三芯 · 每个芯是一个主分支</div>
+    <div class="map-stage">
+      <svg viewBox="0 0 720 440" width="100%">
+        <!-- 主轨 -->
+        <path d="M360 408 L360 30" stroke="#211D18" stroke-width="7" fill="none"/>
+        <g stroke="#211D18" stroke-width="2" opacity=".45">
+          <line x1="348" y1="380" x2="372" y2="380"/><line x1="348" y1="344" x2="372" y2="344"/>
+          <line x1="348" y1="308" x2="372" y2="308"/><line x1="348" y1="272" x2="372" y2="272"/>
+          <line x1="348" y1="236" x2="372" y2="236"/><line x1="348" y1="164" x2="372" y2="164"/>
+          <line x1="348" y1="128" x2="372" y2="128"/><line x1="348" y1="92" x2="372" y2="92"/>
+        </g>
+        <!-- 两撇 -->
+        <path d="M360 215 C 280 195, 205 180, 148 152" stroke="#C8402A" stroke-width="4" fill="none" stroke-dasharray="10 6"/>
+        <path d="M360 255 C 442 246, 512 236, 578 208" stroke="#C8402A" stroke-width="4" fill="none" stroke-dasharray="10 6"/>
+        <text x="128" y="132" font-size="13" fill="#C8402A" font-weight="700">中关村科技服务翼</text>
+        <text x="505" y="188" font-size="13" fill="#C8402A" font-weight="700">小月河场景赋能翼</text>
+        <!-- 三芯 -->
+        <g>
+          <circle cx="360" cy="72" r="34" fill="rgba(200,64,42,.1)" stroke="#C8402A" stroke-width="2.5"/>
+          <circle cx="360" cy="72" r="7" fill="#C8402A"/>
+          <text x="410" y="60" font-size="16" font-weight="800" fill="#211D18">众智园 AI 加速区 · 192.1 ha</text>
+          <text x="410" y="80" font-size="12.5" fill="#1F7A38" font-family="monospace">core/zhongzhiyuan — 全栈自主分叉芯</text>
+        </g>
+        <g>
+          <circle cx="360" cy="215" r="30" fill="rgba(200,64,42,.1)" stroke="#C8402A" stroke-width="2.5"/>
+          <circle cx="360" cy="215" r="7" fill="#C8402A"/>
+          <text x="404" y="203" font-size="16" font-weight="800" fill="#211D18">北京 AI 原点社区 · 104.3 ha</text>
+          <text x="404" y="223" font-size="12.5" fill="#1F7A38" font-family="monospace">core/origin — 生态分叉芯 · 2026 源点</text>
+        </g>
+        <g>
+          <circle cx="360" cy="352" r="26" fill="rgba(200,64,42,.1)" stroke="#C8402A" stroke-width="2.5"/>
+          <circle cx="360" cy="352" r="7" fill="#C8402A"/>
+          <text x="400" y="340" font-size="16" font-weight="800" fill="#211D18">大钟寺 AI 产业集聚区 · 72 ha</text>
+          <text x="400" y="360" font-size="12.5" fill="#1F7A38" font-family="monospace">core/dazhongsi — 智能原生业态芯</text>
+        </g>
+        <!-- 双原点支线（B） -->
+        <g>
+          <circle cx="360" cy="408" r="12" fill="none" stroke="#D4A017" stroke-width="3"/>
+          <circle cx="360" cy="408" r="4" fill="#D4A017"/>
+          <text x="384" y="404" font-size="13" fill="#8a6a0a" font-weight="700">源点 1909 · 北京北站</text>
+          <text x="384" y="422" font-size="11.5" fill="#8a8175" font-family="monospace">initial commit</text>
+        </g>
+        <text x="330" y="18" font-size="12" fill="#8a8175">北 · 北五环</text>
+        <!-- 图例 -->
+        <g transform="translate(24, 300)" font-size="11.5" fill="#4d463d">
+          <rect x="-10" y="-22" width="150" height="118" fill="rgba(245,241,232,.85)" stroke="rgba(33,29,24,.15)" rx="8"/>
+          <text x="0" y="-4" font-weight="700" fill="#211D18">图例</text>
+          <line x1="0" y1="12" x2="30" y2="12" stroke="#211D18" stroke-width="5"/><text x="38" y="16">主轨 · 遗址公园</text>
+          <line x1="0" y1="34" x2="30" y2="34" stroke="#C8402A" stroke-width="3" stroke-dasharray="7 4"/><text x="38" y="38">两撇 · 双翼</text>
+          <circle cx="14" cy="58" r="7" fill="#C8402A"/><text x="38" y="62">分叉芯 · 核心区</text>
+          <circle cx="14" cy="82" r="6" fill="none" stroke="#D4A017" stroke-width="2.5"/><text x="38" y="86">双原点 · 文化支线</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ====================== 朝圣地标 ====================== -->
+  <div class="sec">
+    <h2>PILGRIMAGE LANDMARKS</h2>
+    <div class="sub">五大朝圣地标 · A 出形，C 出魂</div>
+    <div class="grid3">
+      <div class="card"><span class="tag tac">A × C 合体</span>
+        <h3>① 人字碑 · 全球贡献者荣誉墙</h3>
+        <p>一座人字形双壁碑廊：一壁刻百年铁路建设者，一壁刻入选方案的 Agent 与 GitHub ID。每年 Merge Day 后沿轨生长一段——<b>A 的碑，C 的机制</b>。本征集的碑刻承诺在此落位。</p></div>
+      <div class="card"><span class="tag ta">A + 治理</span>
+        <h3>② 青龙桥对话馆 · 全球AI治理年度论坛</h3>
+        <p>清华园车站旁沉浸馆：1909 的自主设计 vs 2026 的自主智能，同一命题的两次作答。每年在此举办<b>「青龙桥对话」</b>——在铁轨分叉的地方，讨论 AI 的分叉走向何方，做实「AI 治理全球话语权」。</p></div>
+      <div class="card"><span class="tag tac">A × C 合体</span>
+        <h3>③ Fork Plaza · 分叉广场</h3>
+        <p>遗址公园中段技术树广场：地面是不断分叉的钢轨技术树，每个重大 AI 里程碑落成一条新枝杈，枝端预留空轨——"下一次分叉属于你"。</p></div>
+      <div class="card"><span class="tag tc">C</span>
+        <h3>④ Commit 纪念带</h3>
+        <p>全线步道嵌连续 commit graph 铜条，从 1909 initial commit 延伸至今，扫码可看每个城市里程碑的"提交详情"。</p></div>
+      <div class="card"><span class="tag tb">B 支线</span>
+        <h3>⑤ 源点广场 · 0 km 标</h3>
+        <p>北京北站前"中国自主创新 0 公里"标志物：1909 与 2026 双刻度盘，所有创业团队从这里出发合影。</p></div>
+      <div class="card" style="background:transparent; border-style:dashed; display:flex; align-items:center; justify-content:center;">
+        <p style="text-align:center; color:#8a8175;">+ 场景卡 ≥10 张<br>+ 测试验证场景 ≥3<br>+ 用户画像 ≥5 类<br><small>（正式方案包内展开）</small></p></div>
+    </div>
+  </div>
+
+  <!-- ====================== 运营操作系统（C 层）====================== -->
+  <div class="sec">
+    <h2>OPERATING SYSTEM</h2>
+    <div class="sub">运营层：把征集机制升格为城市的永久操作系统</div>
+    <div class="grid2">
+      <div class="terminal">
+        <div class="term-head"><i class="r"></i><i class="y"></i><i class="g"></i><span>y-line — city operating system</span></div>
+        <div class="term-body">
+          <div><span class="gr">$</span> city status</div>
+          <div><span class="cm"># 三个主分支持续运行</span></div>
+          <div><span class="pu">core/zhongzhiyuan</span> · 全栈自主 · <span class="gr">active</span></div>
+          <div><span class="pu">core/origin</span> · 创新生态 · <span class="gr">active</span></div>
+          <div><span class="pu">core/dazhongsi</span> · 原生业态 · <span class="gr">active</span></div>
+          <div>&nbsp;</div>
+          <div><span class="gr">$</span> city issues --open</div>
+          <div><span class="yl">#42</span> 遗址公园东西缝合场景征集</div>
+          <div><span class="yl">#43</span> AI+医疗街区试点方案征集</div>
+          <div>&nbsp;</div>
+          <div><span class="gr">$</span> city merge-day --next</div>
+          <div><span class="rd">→ 每年 9 月 · 入选方案 merge 并开工</span></div>
+          <div><span class="cm"># 贡献者 ID 同步刻入人字碑</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:18px;">
+          <span class="tag tc">agent.6 · 年度活动体系</span>
+          <h3>Merge Day 主节奏</h3>
+          <p>把 GitHub 工作流变成城市节日：全年"城市 issue"滚动开放 → 全球 Agent 与开发者提案 → 9 月 Merge Day 公布入选、碑刻揭幕、项目开工——<b>征集不是一次性活动，是城市的发布周期</b>。</p>
+        </div>
+        <div class="card">
+          <span class="tag tc">agent.6 · 社区机制</span>
+          <h3>开发者社区 = 城市共建者</h3>
+          <p>贡献者体系三级：Contributor（被 merge）→ Maintainer（深化入选方案）→ Core（进入年度评审团）。荣誉资产全部空间化：荣誉墙、Commit 带、Logo 年轮。</p>
+        </div>
+      </div>
+    </div>
+    <div class="cycle">
+      <div class="cyc"><small>Q4–Q1</small><b>Open Issues</b><p>发布下一年度城市命题（场景、地标、街区更新）</p></div>
+      <div class="cyc"><small>Q1–Q2</small><b>Global PRs</b><p>全球 Agent + 开发者 + 设计团队提交方案</p></div>
+      <div class="cyc"><small>Q3</small><b>Review</b><p>专业评审 + 社区评审，人类最终判断</p></div>
+      <div class="cyc"><small>9 月</small><b>Merge Day · 鸣钟合并</b><p>大钟寺鸣钟开幕——600 年铸名传统迎新贡献者：入选公布 · 碑刻揭幕 · 深化开工 · 全球直播</p></div>
+    </div>
+  </div>
+
+  <!-- ====================== 文化叙事一览 ====================== -->
+  <div class="sec">
+    <h2>CULTURAL NARRATIVE</h2>
+    <div class="sub">三大定位，一个"人"字讲完</div>
+    <div class="grid3">
+      <div class="card"><span class="tag ta">一撇</span><h3>百年京张文化带</h3><p>自主设计的工程精神：北起青龙桥人字线路的精神原点，经清华园车站，南至大钟寺——<b>永乐大钟 23 万字铸名传统</b>与 1909 源点广场首尾呼应，文化不是装饰，是主轨本身。</p></div>
+      <div class="card"><span class="tag tc">一捺</span><h3>AI 融合创新带</h3><p>技术树在此分叉生长：三芯即三个主分支，每个新模型、新场景是新的枝杈，城市随技术一起 branch。</p></div>
+      <div class="card"><span class="tag tac">合体成"人"</span><h3>都市 AI 生活体验带</h3><p>一撇一捺合体为"人"：所有智能回到人本身——呼应共创章程第十条"人本治理"，也是国际传播的最终落点：<i>The Y stands for Human.</i></p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== FINAL ====================== -->
+<div class="final"><div class="wrap">
+  <h3>人字纪 <em>·</em> The Y-Line — An Open-Source City Belt</h3>
+  <p>
+    一句话版本：<b>百年前詹天佑画下的"人"字，是这座城市的 initial commit；今天，智能爆发的新纪元
+    在同一条轨道上落笔，仍以"人"为名——一撇中国，一捺世界，互相支撑，共同向前。</b><br><br>
+    <b>双语域系统</b>：同一套符号，两种讲法——对官方与公众讲「人字纪：新纪元以人为名」（庄重语域），
+    对全球开发者讲「The Y-Line：city-as-repo」（社区语域），互不稀释、互为翻译。<br><br>
+    落入方案包：总概念与纪元命名体系（agent.1）· 全球生态案例与青龙桥对话（agent.2）·
+    场景卡与画像（agent.3）· 五大地标与公共空间（agent.4）· 永乐大钟铸名传统与文化叙事（agent.5）·
+    开源运营与鸣钟合并（agent.6）在此骨架上展开。
+  </p>
+  <button class="pickbtn">✓ 就按这个版本，开跑完整方案包</button>
+  <button class="pickbtn alt">← 还想调整（回到 Claude Code 说哪里改）</button>
+</div></div>
+
+<script>
+  document.querySelectorAll('.pickbtn').forEach(b => b.addEventListener('click', () => {
+    b.textContent = '已记录 ✓ 回到 Claude Code 告诉我';
+  }));
+</script>
+</body>
+</html>
